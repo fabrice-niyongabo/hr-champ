@@ -1,5 +1,7 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import { connectToDB } from "./lib/connectToDB";
+import User from "./models/user";
 
 export const authOptions: NextAuthConfig = {
   providers: [
@@ -10,9 +12,15 @@ export const authOptions: NextAuthConfig = {
   ],
   callbacks: {
     async signIn(params) {
-      console.log({ params });
       if (params.account?.provider === "github" && params.user) {
-        console.log(params.user);
+        // console.log(params.user);
+        const { email, image, name } = params.user;
+        await connectToDB();
+        const user = await User.findOne({ email });
+
+        if (!user) {
+          await User.create({ email, names: name, image });
+        }
       }
       return true;
     },
