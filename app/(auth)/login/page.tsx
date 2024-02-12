@@ -2,13 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
-import { signIn } from "next-auth/react";
-import React from "react";
+import { signIn, useSession } from "next-auth/react";
 
 function Login() {
+  const sessions = useSession();
+  console.log({ sessions });
+
   return (
     <div>
-      <Button onClick={() => signIn("github")}>
+      <Button onClick={async () => await signIn("github")}>
         <Github size={24} />
         Continue with github
       </Button>
