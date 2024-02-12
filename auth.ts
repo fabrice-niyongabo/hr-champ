@@ -18,11 +18,11 @@ export const authOptions: NextAuthConfig = {
     },
   },
   //custom pages
-  // pages: {
-  //   signIn: "/login",
-  //   // error: "/error",
-  //   // verifyRequest: "/verify-request",
-  // },
+  pages: {
+    signIn: "/login",
+    // error: "/error",
+    // verifyRequest: "/verify-request",
+  },
 };
 
 export const {
