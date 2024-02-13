@@ -30,8 +30,12 @@ const usersSchema = new Schema(
 );
 
 // Define the Users model with the explicit type
-const Users: Model<UserDocument> =
-  mongoose.model<UserDocument>("Users", usersSchema) ||
-  mongoose.model<UserDocument>("Users");
+let Users: Model<UserDocument>;
+
+try {
+  Users = mongoose.model<UserDocument>("Users", usersSchema);
+} catch (error) {
+  Users = mongoose.model<UserDocument>("Users");
+}
 
 export default Users;
