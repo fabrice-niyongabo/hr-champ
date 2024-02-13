@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
+import { Send } from "lucide-react";
 
 function Description({ setActiveState, setState, state }: IStepProps) {
   const { toast } = useToast();
@@ -43,46 +44,30 @@ function Description({ setActiveState, setState, state }: IStepProps) {
       });
   };
 
-  const handleNext = () => {};
   return (
     <div>
-      <div>
-        <label className="text-xs" htmlFor="">
-          Description<sup className="text-red-500">*</sup>
-        </label>
-        <Textarea
-          disabled={loading}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Try to describe the offer our AI will generate a full job description."
-        />
-      </div>
-      <div className="text-center mt-3">
-        <Button
-          size={"sm"}
-          className="bg-gray-800 inline-flex gap-2"
-          onClick={() => handleGenerate()}
-          disabled={loading}
-        >
-          {loading && (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-          )}
-          <span>
-            {loading ? "Generating..." : "Generate Description with AI"}
-          </span>
-        </Button>
-      </div>
+      <div>here</div>
 
-      <div className="flex items-center justify-end gap-2 mt-3">
+      <div className="flex items-start justify-between gap-4 mt-3 border-t pt-3">
         <Button
           size={"sm"}
           variant={"outline"}
           onClick={() => setActiveState("Basic Info")}
+          disabled={loading}
         >
           Back
         </Button>
-        <Button size={"sm"} onClick={() => handleNext()}>
-          Next Step
+        <Textarea
+          disabled={loading}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Try to describe the offer, our AI will generate a full job description."
+        />
+        <Button size={"sm"} onClick={() => handleGenerate()} disabled={loading}>
+          {loading && (
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          )}
+          <Send size={24} />
         </Button>
       </div>
     </div>
