@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Briefcase,
   ChevronRight,
@@ -16,8 +15,8 @@ function SideBar() {
           HR<span className="text-blue-700">Champ.</span>
         </p>
       </div>
-      <div className="py-2 flex-1 flex flex-col items-start justify-between">
-        <ul className="flex-1">
+      <div className="py-2 flex-1 flex flex-col items-start justify-between w-full">
+        <ul className="flex-1 w-full">
           <li className="text-sm px-5 py-3 hover:bg-gray-50 hover:text-blue-800 group transition-all duration-500 select-none">
             <Link
               href="/dashboard"
@@ -32,7 +31,10 @@ function SideBar() {
             </Link>
           </li>
           <li className="text-sm px-5 py-3 hover:bg-gray-50 hover:text-blue-800 group transition-all duration-500 select-none">
-            <Link href="#" className="flex items-center justify-start gap-2">
+            <Link
+              href="/dashboard/jobs"
+              className="flex items-center justify-start gap-2"
+            >
               <Briefcase size={18} />
               <span className="flex-1">Job Offers</span>
               <ChevronRight
@@ -53,7 +55,7 @@ function SideBar() {
           </li>
         </ul>
 
-        <div className="px-5 w-full">
+        <div className="px-5 w-full border-t pt-3">
           <button className="rounded-full w-full py-2 text-xs bg-gray-300 text-blue-800 font-semibold hover:bg-blue-800 hover:text-white transition-all duration-500">
             Logout
           </button>
