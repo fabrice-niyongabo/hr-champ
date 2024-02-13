@@ -76,7 +76,11 @@ function NewJob() {
     state.title && state.location && state.companyName ? true : false;
   return (
     <div>
-      <PageHeader title="Create Job Offer" />
+      <PageHeader
+        title={`Create Job Offer ${
+          state.title.trim() !== "" ? "- " + state.title : ""
+        }`}
+      />
       <Card className="mt-5">
         <CardContent className="pt-5">
           <div className="flex items-center justify-between gap-2 mb-5 border-b pb-2">

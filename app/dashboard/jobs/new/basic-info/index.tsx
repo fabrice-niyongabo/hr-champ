@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { IStepProps } from "../page";
 import { useToast } from "@/components/ui/use-toast";
+import { title } from "process";
 
 function BasicInfo({ setActiveState, setState, state }: IStepProps) {
   const { toast } = useToast();
@@ -54,9 +55,10 @@ function BasicInfo({ setActiveState, setState, state }: IStepProps) {
         <Input
           placeholder="Job title"
           value={stepState.title}
-          onChange={(e: any) =>
-            setStepState((prev) => ({ ...prev, title: e.target.value }))
-          }
+          onChange={(e: any) => {
+            setState((prev: any) => ({ ...prev, title: e.target.value }));
+            setStepState((prev) => ({ ...prev, title: e.target.value }));
+          }}
         />
       </div>
       <div>
