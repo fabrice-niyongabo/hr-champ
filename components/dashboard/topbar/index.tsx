@@ -23,7 +23,7 @@ async function TopBar() {
   const data = await auth();
 
   return (
-    <div className="bg-white border-b py-3 px-5 flex items-center justify-between">
+    <div className="bg-white border-b py-3 px-5 h-16 flex items-center justify-between">
       <div>
         <p className="m-0 p-0 text-lg font-semibold">Welcome Again!</p>
         <p className="text-xs text-gray-400">

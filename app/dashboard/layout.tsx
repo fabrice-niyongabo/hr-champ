@@ -7,11 +7,11 @@ interface LayoutProps {
 }
 function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen w-full flex items-start justify-between">
+    <div className=" h-screen min-h-screen w-full flex items-start justify-between bg-gray-100">
       <SideBar />
-      <div className="flex-1 bg-gray-100 min-h-screen">
+      <div className="flex-1  min-h-screen">
         <TopBar />
-        <main className="p-3">{children}</main>
+        <main className="p-5">{children}</main>
       </div>
     </div>
   );
