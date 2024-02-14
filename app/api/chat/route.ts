@@ -1,22 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    // console.log({ request: request.body });
-    // //@ts-ignore
-    // const { message } = await request.body.json();
-    // console.log({ message });
+    const { message } = await request.json();
 
-    // if (!message) {
-    //   return NextResponse.json(
-    //     { message: "No messages provided" },
-    //     { status: 400 }
-    //   );
-    // }
-
-    const message =
-      "I want you to create a job announcement template for Senior Frontend Software Developer role/job, based on the follwing description: we want an experienced candidate who is able to do the job";
+    if (!message) {
+      return NextResponse.json(
+        { message: "No message provided" },
+        { status: 400 }
+      );
+    }
 
     const openai = new OpenAI({
       organization: process.env.OPEN_API_ORGANIZATION_ID,

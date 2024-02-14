@@ -7,6 +7,7 @@ import BasicInfo from "./basic-info";
 import Description from "./description";
 import RequiredFields from "./required-fields";
 import StepHeader from "@/components/step-header";
+import { IChat } from "@/types";
 
 export interface IState {
   title: string;
@@ -29,7 +30,9 @@ const renderActiveState = (
   activeState: ActiveState,
   state: IState,
   setState: any,
-  setActiveState: any
+  setActiveState: any,
+  responses: IChat[],
+  setResponses: any
 ) => {
   switch (activeState) {
     case "Basic Info":
@@ -46,6 +49,8 @@ const renderActiveState = (
           state={state}
           setState={setState}
           setActiveState={setActiveState}
+          responses={responses}
+          setResponses={setResponses}
         />
       );
     case "Required Fields":
@@ -69,8 +74,10 @@ const initialState: IState = {
 };
 
 function NewJob() {
-  const [activeState, setActiveState] = useState<ActiveState>("Basic Info");
+  const [activeState, setActiveState] = useState<ActiveState>("Description");
   const [state, setState] = useState<IState>(initialState);
+
+  const [responses, setResponses] = useState<IChat[]>([]);
 
   const isBasicInfoCOmpleted = () =>
     state.title && state.location && state.companyName ? true : false;
@@ -94,7 +101,14 @@ function NewJob() {
             />
             <StepHeader title="Required Form Data" isCompleted={false} />
           </div>
-          {renderActiveState(activeState, state, setState, setActiveState)}
+          {renderActiveState(
+            activeState,
+            state,
+            setState,
+            setActiveState,
+            responses,
+            setResponses
+          )}
         </CardContent>
       </Card>
     </div>

@@ -19,6 +19,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
+    "html-react-parser": "^5.1.5",
     "lucide-react": "^0.330.0",
     "mongoose": "^8.1.2",
     "next": "14.1.0",
