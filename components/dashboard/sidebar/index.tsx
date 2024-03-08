@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import Logout from "./logout";
 
 function SideBar() {
   return (
@@ -56,9 +57,7 @@ function SideBar() {
         </ul>
 
         <div className="px-5 w-full border-t pt-3">
-          <button className="rounded-full w-full py-2 text-xs bg-gray-300 text-blue-800 font-semibold hover:bg-blue-800 hover:text-white transition-all duration-500">
-            Logout
-          </button>
+          <Logout />
         </div>
       </div>
     </div>
