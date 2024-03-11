@@ -32,7 +32,9 @@ const renderActiveState = (
   setState: any,
   setActiveState: any,
   responses: IChat[],
-  setResponses: any
+  setResponses: any,
+  editedDescription: string,
+  setEditedDescription: any
 ) => {
   switch (activeState) {
     case "Basic Info":
@@ -51,6 +53,8 @@ const renderActiveState = (
           setActiveState={setActiveState}
           responses={responses}
           setResponses={setResponses}
+          editedDescription={editedDescription}
+          setEditedDescription={setEditedDescription}
         />
       );
     case "Required Fields":
@@ -78,6 +82,7 @@ function NewJob() {
   const [state, setState] = useState<IState>(initialState);
 
   const [responses, setResponses] = useState<IChat[]>([]);
+  const [editedDescription, setEditedDescription] = useState<string>("");
 
   const isBasicInfoCOmpleted = () =>
     state.title && state.location && state.companyName ? true : false;
@@ -107,7 +112,9 @@ function NewJob() {
             setState,
             setActiveState,
             responses,
-            setResponses
+            setResponses,
+            editedDescription,
+            setEditedDescription
           )}
         </CardContent>
       </Card>

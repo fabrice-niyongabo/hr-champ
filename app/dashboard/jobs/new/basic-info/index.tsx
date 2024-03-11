@@ -108,7 +108,7 @@ function BasicInfo({ setActiveState, setState, state }: IStepProps) {
       </div>
       <div>
         <label className="text-xs" htmlFor="">
-          Company Name (Optional)
+          Salary (Optional)
         </label>
         <Input
           placeholder="ex: 500 USD"

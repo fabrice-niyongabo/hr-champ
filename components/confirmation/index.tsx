@@ -12,13 +12,15 @@ import {
 interface IProps {
   showAlert: boolean;
   setShowAlert: any;
-  callBack: any;
+  callBack?: any;
   title: string;
 }
 function Confirmation(props: IProps) {
   const handleContinue = () => {
     props.setShowAlert(false);
-    props.callBack();
+    if (props.callBack) {
+      props.callBack();
+    }
   };
   return (
     <AlertDialog open={props.showAlert} onOpenChange={props.setShowAlert}>

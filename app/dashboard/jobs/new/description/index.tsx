@@ -8,10 +8,13 @@ import { Send } from "lucide-react";
 import Message from "./message";
 import { IChat } from "@/types";
 import AILoader from "./ai-loader";
+import Confirmation from "@/components/confirmation";
 
 interface IProps extends IStepProps {
   responses: IChat[];
   setResponses: any;
+  editedDescription: string;
+  setEditedDescription: any;
 }
 
 function Description({
@@ -20,10 +23,14 @@ function Description({
   state,
   responses,
   setResponses,
+  editedDescription,
+  setEditedDescription,
 }: IProps) {
   const { toast } = useToast();
   const [description, setDescription] = useState(state.description);
+  const [selectedDescription, setSelectedDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const handleGenerate = () => {
     if (description.trim().length === 0) {
       toast({
@@ -45,12 +52,13 @@ function Description({
       .post("/api/chat", {
         message:
           responses.length === 0
-            ? `I want you to create a professional job advert for ${state.title} role/job, based on the following description: ${description}`
+            ? `I want you to create a professional job advert for ${state.title} role/job for the company ${state.companyName}, based on the following description: ${description}. Location is ${state.location}. Candidates can also apply through this platform by clicking on 'apply now' button.`
             : description,
       })
       .then((res) => {
         setLoading(false);
         setResponses((prev: any) => [...prev, res.data.response]);
+        setDescription("");
       })
       .catch((err) => {
         console.log({ err });
@@ -64,18 +72,26 @@ function Description({
       });
   };
 
+  const handleNext = () => {
+    setActiveState("Required Fields");
+  };
+
   return (
     <div>
       <div className="py-3">
         <Message
           type="assistant"
           message={"Let me know more details about " + state.title}
+          index={0}
         />
         {responses.map((response, index) => (
           <Message
             key={index}
+            index={index}
             type={response.role}
             message={response.content}
+            setShowAlert={setShowAlert}
+            setSelectedDescription={setSelectedDescription}
           />
         ))}
         {loading && <AILoader />}
@@ -90,25 +106,41 @@ function Description({
         >
           Back
         </Button>
-        <Textarea
-          disabled={loading}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Try to describe the offer, our AI will generate a full job description."
-        />
-        <Button
-          size={"sm"}
-          onClick={() => handleGenerate()}
-          disabled={loading}
-          className="rounded-full"
-        >
-          {loading ? (
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-          ) : (
-            <Send size={24} />
-          )}
-        </Button>
+        {editedDescription.trim().length > 5 && (
+          <Textarea
+            disabled={loading}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Try to describe the offer, our AI will generate a full job description."
+          />
+        )}
+        {editedDescription.trim().length > 5 ? (
+          <Button size={"sm"} onClick={() => handleNext()}>
+            Next Step
+          </Button>
+        ) : (
+          <Button
+            size={"sm"}
+            onClick={() => handleGenerate()}
+            disabled={loading}
+            className="rounded-full"
+          >
+            {loading ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            ) : (
+              <Send size={24} />
+            )}
+          </Button>
+        )}
       </div>
+      <Confirmation
+        setShowAlert={setShowAlert}
+        showAlert={showAlert}
+        title="Do you still want to continue with this operation?"
+        callBack={() => {
+          setEditedDescription(selectedDescription);
+        }}
+      />
     </div>
   );
 }
