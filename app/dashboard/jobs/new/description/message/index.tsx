@@ -9,8 +9,20 @@ interface IProps {
   setShowAlert?: any;
 }
 
+function boldText(message: string) {
+  // Define the pattern to match the text to replace
+  var pattern = /\*\*(.*?)\*\*/g;
+
+  // Replace the text with the bold HTML tags
+  var outputString = message.replace(pattern, "<b>$1</b>");
+
+  return outputString;
+}
+
 const formatMessage = (msg: string): string => {
-  return msg.replaceAll("\n", "<br />");
+  const brMessage = msg.replaceAll("\n", "<br />");
+  const boldMessage = boldText(brMessage);
+  return boldMessage;
 };
 
 function Message({
@@ -26,6 +38,7 @@ function Message({
       setShowAlert(true);
     }
   };
+  // console.log({ message });
   return (
     <div className="mb-3">
       {type === "assistant" ? (

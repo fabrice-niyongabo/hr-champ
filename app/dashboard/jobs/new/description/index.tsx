@@ -8,13 +8,18 @@ import { Send } from "lucide-react";
 import Message from "./message";
 import { IChat } from "@/types";
 import AILoader from "./ai-loader";
+import { Editor } from "react-draft-wysiwyg";
 import Confirmation from "@/components/confirmation";
+import { ContentState, EditorState } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 
 interface IProps extends IStepProps {
   responses: IChat[];
   setResponses: any;
   editedDescription: string;
   setEditedDescription: any;
+  editorState: EditorState;
+  setEditorState: any;
 }
 
 function Description({
@@ -25,6 +30,8 @@ function Description({
   setResponses,
   editedDescription,
   setEditedDescription,
+  editorState,
+  setEditorState,
 }: IProps) {
   const { toast } = useToast();
   const [description, setDescription] = useState(state.description);
@@ -52,7 +59,7 @@ function Description({
       .post("/api/chat", {
         message:
           responses.length === 0
-            ? `I want you to create a professional job advert for ${state.title} role/job for the company ${state.companyName}, based on the following description: ${description}. Location is ${state.location}. Candidates can also apply through this platform by clicking on 'apply now' button.`
+            ? `I want you to create a professional job advert for ${state.title} role/job for the company ${state.companyName}, based on the following description: ${description}. Location is ${state.location}, job type is ${state.jobType}. Candidates can also apply through this platform by clicking on 'apply now' button.`
             : description,
       })
       .then((res) => {
@@ -76,25 +83,74 @@ function Description({
     setActiveState("Required Fields");
   };
 
+  const selectCallBack = () => {
+    setEditedDescription(selectedDescription);
+
+    const blocksFromHtml = htmlToDraft(selectedDescription);
+    const { contentBlocks, entityMap } = blocksFromHtml;
+    const contentState = ContentState.createFromBlockArray(
+      contentBlocks,
+      entityMap
+    );
+    const editorState = EditorState.createWithContent(contentState);
+    setEditorState(editorState);
+  };
+
   return (
     <div>
       <div className="py-3">
-        <Message
-          type="assistant"
-          message={"Let me know more details about " + state.title}
-          index={0}
-        />
-        {responses.map((response, index) => (
-          <Message
-            key={index}
-            index={index}
-            type={response.role}
-            message={response.content}
-            setShowAlert={setShowAlert}
-            setSelectedDescription={setSelectedDescription}
-          />
-        ))}
-        {loading && <AILoader />}
+        {editedDescription.trim().length === 0 ? (
+          <>
+            <Message
+              type="assistant"
+              message={"Let me know more details about " + state.title}
+              index={0}
+            />
+            {responses.map((response, index) => (
+              <Message
+                key={index}
+                index={index}
+                type={response.role}
+                message={response.content}
+                setShowAlert={setShowAlert}
+                setSelectedDescription={setSelectedDescription}
+              />
+            ))}
+            {loading && <AILoader />}
+          </>
+        ) : (
+          <>
+            <h3 className="text-2xl font-semibold mb-3">Edit Job template</h3>
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={(editorState) => setEditorState(editorState)}
+              editorStyle={{
+                border: "1px solid #CCC",
+                padding: "10px",
+                fontSize: 12,
+              }}
+              toolbar={{
+                options: [
+                  "inline",
+                  "blockType",
+                  // "fontFamily",
+                  "list",
+                  "textAlign",
+                  // "colorPicker",
+                  "link",
+                  // "embedded",
+                  // "emoji",
+                  "image",
+                  // "remove",
+                  "history",
+                ],
+              }}
+            />
+          </>
+        )}
       </div>
 
       <div className="flex items-start justify-between gap-4 mt-3 border-t pt-3">
@@ -106,7 +162,7 @@ function Description({
         >
           Back
         </Button>
-        {editedDescription.trim().length > 5 && (
+        {editedDescription.trim().length === 0 && (
           <Textarea
             disabled={loading}
             value={description}
@@ -136,10 +192,8 @@ function Description({
       <Confirmation
         setShowAlert={setShowAlert}
         showAlert={showAlert}
-        title="Do you still want to continue with this operation?"
-        callBack={() => {
-          setEditedDescription(selectedDescription);
-        }}
+        title="Do you still want to continue with this job template?"
+        callBack={selectCallBack}
       />
     </div>
   );

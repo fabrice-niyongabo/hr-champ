@@ -8,6 +8,7 @@ import Description from "./description";
 import RequiredFields from "./required-fields";
 import StepHeader from "@/components/step-header";
 import { IChat } from "@/types";
+import { EditorState } from "draft-js";
 
 export interface IState {
   title: string;
@@ -34,7 +35,9 @@ const renderActiveState = (
   responses: IChat[],
   setResponses: any,
   editedDescription: string,
-  setEditedDescription: any
+  setEditedDescription: any,
+  editorState: EditorState,
+  setEditorState: any
 ) => {
   switch (activeState) {
     case "Basic Info":
@@ -55,6 +58,8 @@ const renderActiveState = (
           setResponses={setResponses}
           editedDescription={editedDescription}
           setEditedDescription={setEditedDescription}
+          editorState={editorState}
+          setEditorState={setEditorState}
         />
       );
     case "Required Fields":
@@ -78,11 +83,13 @@ const initialState: IState = {
 };
 
 function NewJob() {
-  const [activeState, setActiveState] = useState<ActiveState>("Description");
+  const [activeState, setActiveState] = useState<ActiveState>("Basic Info");
   const [state, setState] = useState<IState>(initialState);
 
   const [responses, setResponses] = useState<IChat[]>([]);
   const [editedDescription, setEditedDescription] = useState<string>("");
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const isBasicInfoCOmpleted = () =>
     state.title && state.location && state.companyName ? true : false;
@@ -102,7 +109,7 @@ function NewJob() {
             />
             <StepHeader
               title="Description"
-              isCompleted={state.description.length > 0}
+              isCompleted={editedDescription.length > 0}
             />
             <StepHeader title="Required Form Data" isCompleted={false} />
           </div>
@@ -114,7 +121,9 @@ function NewJob() {
             responses,
             setResponses,
             editedDescription,
-            setEditedDescription
+            setEditedDescription,
+            editorState,
+            setEditorState
           )}
         </CardContent>
       </Card>

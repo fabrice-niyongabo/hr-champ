@@ -1,6 +1,7 @@
 import SideBar from "@/components/dashboard/sidebar";
 import TopBar from "@/components/dashboard/topbar";
-import React from "react";
+
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 interface LayoutProps {
   children: React.ReactNode;
