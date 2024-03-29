@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button";
 import { IApplicationFormInputField } from "@/types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import "./index.css";
+
+import Image from "next/image";
 export const DraggableItem = ({
   item,
 }: {
@@ -21,10 +23,24 @@ export const DraggableItem = ({
       style={style}
       {...attributes}
       {...listeners}
-      className="task"
+      className="bg-white rounded-md shadow-md py-2 px-5 flex items-center justify-between gap-3 touch-none"
     >
-      <input type="checkbox" className="checkbox" />
-      {item.label}
+      <Image
+        src={"/dots.png"}
+        alt="move"
+        width={20}
+        height={30}
+        className="h-[30px] w-[20px]"
+      />
+      <div className="flex-1 line-clamp-1" title={item.label}>
+        {item.type} - {item.label}
+      </div>
+      <div className="flex items-center justify-between gap-2 border-l">
+        <Button variant={"ghost"}>Edit</Button>
+        <Button variant={"ghost"} className="text-red-500">
+          Remove
+        </Button>
+      </div>
     </div>
   );
 };
