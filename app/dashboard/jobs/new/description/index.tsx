@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { IStepProps } from "../page";
 import { Button } from "@/components/ui/button";
