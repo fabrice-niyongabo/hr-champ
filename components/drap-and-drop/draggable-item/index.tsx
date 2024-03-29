@@ -6,8 +6,10 @@ import { CSS } from "@dnd-kit/utilities";
 import Image from "next/image";
 export const DraggableItem = ({
   item,
+  handleRemoveItem,
 }: {
   item: IApplicationFormInputField;
+  handleRemoveItem: any;
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.id });
@@ -32,12 +34,20 @@ export const DraggableItem = ({
         height={30}
         className="h-[30px] w-[20px]"
       />
-      <div className="flex-1 line-clamp-1" title={item.label}>
-        {item.type} - {item.label}
+      <div className="flex-1 line-clamp-1 text-sm" title={item.label}>
+        <span className="capitalize">{item.type}</span> - {item.label}
       </div>
       <div className="flex items-center justify-between gap-2 border-l">
-        <Button variant={"ghost"}>Edit</Button>
-        <Button variant={"ghost"} className="text-red-500">
+        <Button variant={"ghost"} className="hover:text-blue-600 text-sm">
+          Edit
+        </Button>
+        <Button
+          variant={"ghost"}
+          className="text-red-600 text-sm"
+          onClick={() => {
+            handleRemoveItem(item.id);
+          }}
+        >
           Remove
         </Button>
       </div>

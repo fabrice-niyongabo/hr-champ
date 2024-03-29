@@ -51,6 +51,19 @@ function RequiredFields({
 
   console.log({ applicationFormInputs });
 
+  const handleRemoveItem = (id: string) => {
+    //remove item from the list
+    const newState: IApplicationFormInputField[] = [];
+    const updatedList = applicationFormInputs.filter((item) => item.id !== id);
+
+    //re-arrange item IDs
+    updatedList.forEach((item, index) => {
+      newState.push({ ...item, id: "item-" + index });
+    });
+
+    setApplicationFormInputs(newState);
+  };
+
   return (
     <div>
       <div className="border p-5 rounded-md">
@@ -68,7 +81,10 @@ function RequiredFields({
             collisionDetection={closestCorners}
             onDragEnd={handleDragEnd}
           >
-            <DraggableColumns items={applicationFormInputs} />
+            <DraggableColumns
+              items={applicationFormInputs}
+              handleRemoveItem={handleRemoveItem}
+            />
           </DndContext>
         </div>
       </div>
